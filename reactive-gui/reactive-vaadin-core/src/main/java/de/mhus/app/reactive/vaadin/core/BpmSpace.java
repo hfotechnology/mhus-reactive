@@ -33,7 +33,6 @@ import com.vaadin.v7.ui.Label;
 import com.vaadin.v7.ui.Tree;
 import com.vaadin.v7.ui.VerticalLayout;
 
-import de.akquinet.engineering.vaadin.timerextension.TimerExtension;
 import de.mhus.app.reactive.model.engine.EngineMessage;
 import de.mhus.app.reactive.model.engine.PCase.STATE_CASE;
 import de.mhus.app.reactive.model.engine.PNode.STATE_NODE;
@@ -233,18 +232,6 @@ public class BpmSpace extends VerticalLayout implements GuiLifecycle, Navigable 
 
         VerticalLayout menu = buildMenu();
 
-        final TimerExtension timerExtension = TimerExtension.create(menu);
-        timerExtension.setIntervalInMs(
-                (int) CFG_REFRESH_INTERVAL.interval()); // polling interval in milliseconds
-        timerExtension.addTimerListener(
-                e -> {
-                    if (page.getComponentCount() > 0) {
-                        if (currentRefreshable != null) {
-                            log.i("refresh", currentRefreshable);
-                            currentRefreshable.doRefresh();
-                        }
-                    }
-                });
 
         page.addComponent(menu);
         page.setExpandRatio(menu, 0);
@@ -253,8 +240,6 @@ public class BpmSpace extends VerticalLayout implements GuiLifecycle, Navigable 
         navigateTo(DEFAULT_MENU_SELECTION, null);
 
         addComponent(page);
-
-        timerExtension.start();
     }
 
     private VerticalLayout buildMenu() {
